@@ -23,7 +23,7 @@ func (p *Pipedrive) GetBasePath() string {
 	return p.BasePath
 }
 
-func (p *Pipedrive) buildApiUrl(endpoint string) *NetUrl.URL {
+func (p *Pipedrive) makeApiEndpoint(endpoint string) *PdEndpoint {
 	base := p.GetBasePath()
 	if !strings.HasSuffix(p.GetBasePath(), "/") {
 		base += "/"
@@ -34,8 +34,11 @@ func (p *Pipedrive) buildApiUrl(endpoint string) *NetUrl.URL {
 	url, _ := NetUrl.Parse(raw_url)
 	query := url.Query()
 	query.Add("api_token", p.ApiKey)
-	url.RawQuery = query.Encode()
-	return url
+
+	return &PdEndpoint{
+		Url:   url,
+		Query: &query,
+	}
 }
 
 func (p *Pipedrive) readResponse(resp *http.Response) *PipedriveResponse {

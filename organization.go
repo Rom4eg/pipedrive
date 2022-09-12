@@ -10,7 +10,7 @@ func (p *Pipedrive) ListOrganizations() (*PipedriveResponse, error) {
 	if !strings.HasSuffix(p.BasePath, "/") {
 		base += "/"
 	}
-	url := p.buildApiUrl("organizations")
+	url := p.makeApiEndpoint("organizations")
 
 	resp, err := http.Get(url.String())
 

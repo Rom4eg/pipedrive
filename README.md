@@ -1,3 +1,4 @@
 ## Progress
- - [] Organizations
+ - [ ] Activities
+ - [ ] Organizations
    - [X] List organization

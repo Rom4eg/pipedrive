@@ -1,4 +1,38 @@
 ## Progress
  - [ ] Activities
+ - [ ] Activity Fields
+ - [ ] Activity Types
+ - [ ] Billing
+ - [ ] Call Logs
+ - [ ] Channels
+ - [ ] Currencies
+ - [ ] Deals
+ - [ ] Deal Fields
+ - [ ] Files
+ - [ ] Filters
+ - [ ] Goals
+ - [ ] Item Search
+ - [ ] Leads
+ - [ ] Lead Labels
+ - [ ] Lead Sources
+ - [ ] Mailbox
+ - [ ] Notes
+ - [ ] Note Fields
  - [ ] Organizations
-   - [X] List organization
+   - [X] List
+ - [ ] Organization Fields
+ - [ ] Organization Relationships
+ - [ ] Permission Sets
+ - [ ] Persons
+ - [ ] Person Fields
+ - [ ] Pipelines
+ - [ ] Products
+ - [ ] Product Fields
+ - [ ] Recents
+ - [ ] Roles
+ - [ ] Stages
+ - [ ] Subscriptions
+ - [ ] Users
+ - [ ] User Connections
+ - [ ] User Settings
+ - [ ] Webhooks

@@ -19,9 +19,9 @@
  - [ ] Notes
  - [ ] Note Fields
  - [ ] Organizations
-   - [X] Get all organizations
-   - [ ] Search organizations
-   - [X] Get details of an organization
+   - [X] Get all
+   - [ ] Search
+   - [X] Get details
    - [ ] List activities
    - [ ] List deals
    - [ ] List files

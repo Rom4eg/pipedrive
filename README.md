@@ -19,7 +19,24 @@
  - [ ] Notes
  - [ ] Note Fields
  - [ ] Organizations
-   - [X] List
+   - [X] Get all organizations
+   - [ ] Search organizations
+   - [X] Get details of an organization
+   - [ ] List activities
+   - [ ] List deals
+   - [ ] List files
+   - [ ] List updates
+   - [ ] List followers
+   - [ ] List mail messages
+   - [ ] List permitted users
+   - [ ] List persons
+   - [ ] Add
+   - [ ] Add a follower
+   - [ ] Update
+   - [ ] Merge
+   - [ ] Delete multiple organizations in bulk
+   - [ ] Delete
+   - [ ] Delete a follower
  - [ ] Organization Fields
  - [ ] Organization Relationships
  - [ ] Permission Sets

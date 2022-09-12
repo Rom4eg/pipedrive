@@ -1,9 +1,9 @@
 package pipedrive
 
 import (
+	"fmt"
 	"net/http"
 	"strconv"
-	"strings"
 )
 
 type OrgFilter struct {
@@ -16,10 +16,6 @@ type OrgFilter struct {
 }
 
 func (p *Pipedrive) ListOrganizations(filter *OrgFilter) (*PipedriveResponse, error) {
-	base := p.BasePath
-	if !strings.HasSuffix(p.BasePath, "/") {
-		base += "/"
-	}
 	url := p.makeApiEndpoint("organizations")
 
 	if filter.UserId > 0 {
@@ -45,6 +41,20 @@ func (p *Pipedrive) ListOrganizations(filter *OrgFilter) (*PipedriveResponse, er
 	if filter.Sort != "" {
 		url.Query.Add("sort", filter.Sort)
 	}
+
+	resp, err := http.Get(url.String())
+
+	if err != nil {
+		return nil, err
+	}
+
+	pd_resp := p.readResponse(resp)
+	return pd_resp, nil
+}
+
+func (p *Pipedrive) GetOrganization(id int) (*PipedriveResponse, error) {
+	ep := fmt.Sprintf("organizations/%d", id)
+	url := p.makeApiEndpoint(ep)
 
 	resp, err := http.Get(url.String())
 

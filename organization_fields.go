@@ -10,7 +10,7 @@ type OrgFieldsFilter struct {
 	Limit int
 }
 
-func (p *Pipedrive) GetOrganizationFields(filter *OrgFieldsFilter) (*PipedriveResponse, error) {
+func (p *Pipedrive) GetOrganizationFields(filter OrgFieldsFilter) (*PipedriveResponse, error) {
 	url := p.makeApiEndpoint("organizationFields")
 
 	if filter.Start >= 0 {

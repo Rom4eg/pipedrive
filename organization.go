@@ -18,7 +18,7 @@ type OrgFilter struct {
 	Sort      string
 }
 
-func (p *Pipedrive) ListOrganizations(filter *OrgFilter) (*PipedriveResponse, error) {
+func (p *Pipedrive) ListOrganizations(filter OrgFilter) (*PipedriveResponse, error) {
 	url := p.makeApiEndpoint("organizations")
 
 	if filter.UserId > 0 {

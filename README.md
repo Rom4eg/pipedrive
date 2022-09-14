@@ -47,6 +47,26 @@
  - [ ] Organization Relationships
  - [ ] Permission Sets
  - [ ] Persons
+   - [X] Get all
+   - [ ] Search
+   - [ ] Get details
+   - [ ] List activities
+   - [ ] List deals
+   - [ ] List files
+   - [ ] List updates
+   - [ ] List followers
+   - [ ] List mail messages
+   - [ ] List permitted users
+   - [ ] List products
+   - [ ] Add
+   - [ ] Add a follower
+   - [ ] Add person picture
+   - [ ] Update
+   - [ ] Merge
+   - [ ] Delete multiple
+   - [ ] Delete
+   - [ ] Delete a follower
+   - [ ] Delete person picture
  - [ ] Person Fields
  - [ ] Pipelines
  - [ ] Products

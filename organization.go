@@ -1,6 +1,8 @@
 package pipedrive
 
 import (
+	"bytes"
+	"encoding/json"
 	"fmt"
 	"net/http"
 	"strconv"
@@ -57,6 +59,25 @@ func (p *Pipedrive) GetOrganization(id int) (*PipedriveResponse, error) {
 	url := p.makeApiEndpoint(ep)
 
 	resp, err := http.Get(url.String())
+
+	if err != nil {
+		return nil, err
+	}
+
+	pd_resp := p.readResponse(resp)
+	return pd_resp, nil
+}
+
+func (p *Pipedrive) AddOrganization(fields map[string]interface{}) (*PipedriveResponse, error) {
+	url := p.makeApiEndpoint("organizations")
+	json_data, err := json.Marshal(fields)
+
+	if err != nil {
+		return nil, err
+	}
+
+	buf := bytes.NewBuffer(json_data)
+	resp, err := http.Post(url.String(), "application/json", buf)
 
 	if err != nil {
 		return nil, err

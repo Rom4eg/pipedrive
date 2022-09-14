@@ -30,7 +30,7 @@
    - [ ] List mail messages
    - [ ] List permitted users
    - [ ] List persons
-   - [ ] Add
+   - [X] Add
    - [ ] Add a follower
    - [ ] Update
    - [ ] Merge

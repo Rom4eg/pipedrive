@@ -76,6 +76,16 @@
  - [ ] Stages
  - [ ] Subscriptions
  - [ ] Users
+   - [X] Get all
+   - [ ] Find
+   - [ ] Get current
+   - [ ] Get one
+   - [ ] List followers
+   - [ ] List permissions
+   - [ ] List roles
+   - [ ] List role settings
+   - [ ] Add
+   - [ ] Update
  - [ ] User Connections
  - [ ] User Settings
  - [ ] Webhooks

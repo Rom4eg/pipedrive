@@ -11,13 +11,19 @@ import (
 )
 
 type Pipedrive struct {
-	BasePath string
-	ApiKey   string
+	BasePath   string
+	ApiKey     string
+	ApiVersion int
 }
 
 func (p *Pipedrive) GetBasePath() string {
+	ver := p.ApiVersion
+	if ver < 1 {
+		ver = 1
+	}
+
 	if p.BasePath == "" {
-		return "https://api.pipedrive.com/v1"
+		return fmt.Sprintf("https://api.pipedrive.com/v%d", ver)
 	}
 
 	return p.BasePath

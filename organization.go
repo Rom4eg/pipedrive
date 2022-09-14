@@ -86,3 +86,27 @@ func (p *Pipedrive) AddOrganization(fields map[string]interface{}) (*PipedriveRe
 	pd_resp := p.readResponse(resp)
 	return pd_resp, nil
 }
+
+func (p *Pipedrive) UpdateOrganization(id int, fields map[string]interface{}) (*PipedriveResponse, error) {
+	ep := fmt.Sprintf("organizations/%d", id)
+	url := p.makeApiEndpoint(ep)
+	json_data, err := json.Marshal(fields)
+
+	if err != nil {
+		return nil, err
+	}
+
+	buf := bytes.NewBuffer(json_data)
+	req, err := http.NewRequest("PUT", url.String(), buf)
+	req.Header.Add("content-type", "application/json")
+
+	var client http.Client
+	resp, err := client.Do(req)
+
+	if err != nil {
+		return nil, err
+	}
+
+	pd_resp := p.readResponse(resp)
+	return pd_resp, nil
+}

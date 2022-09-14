@@ -32,7 +32,7 @@
    - [ ] List persons
    - [X] Add
    - [ ] Add a follower
-   - [ ] Update
+   - [X] Update
    - [ ] Merge
    - [ ] Delete multiple organizations in bulk
    - [ ] Delete

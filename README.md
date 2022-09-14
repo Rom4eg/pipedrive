@@ -34,10 +34,16 @@
    - [ ] Add a follower
    - [X] Update
    - [ ] Merge
-   - [ ] Delete multiple organizations in bulk
+   - [ ] Delete in bulk
    - [X] Delete
    - [ ] Delete a follower
  - [ ] Organization Fields
+   - [X] Get all
+   - [ ] Get one
+   - [ ] Add
+   - [ ] Update
+   - [ ] Delete in bulk
+   - [ ] Delete
  - [ ] Organization Relationships
  - [ ] Permission Sets
  - [ ] Persons

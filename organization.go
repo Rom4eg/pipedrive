@@ -33,7 +33,7 @@ func (p *Pipedrive) ListOrganizations(filter *OrgFilter) (*PipedriveResponse, er
 		url.Query.Add("first_char", filter.FirstChar)
 	}
 
-	if filter.Start > 0 {
+	if filter.Start >= 0 {
 		url.Query.Add("start", strconv.Itoa(filter.Start))
 	}
 

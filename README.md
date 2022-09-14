@@ -35,7 +35,7 @@
    - [X] Update
    - [ ] Merge
    - [ ] Delete multiple organizations in bulk
-   - [ ] Delete
+   - [X] Delete
    - [ ] Delete a follower
  - [ ] Organization Fields
  - [ ] Organization Relationships

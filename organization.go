@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"net/http"
 	"strconv"
+	"strings"
 )
 
 type OrgFilter struct {
@@ -99,6 +100,23 @@ func (p *Pipedrive) UpdateOrganization(id int, fields map[string]interface{}) (*
 	buf := bytes.NewBuffer(json_data)
 	req, err := http.NewRequest("PUT", url.String(), buf)
 	req.Header.Add("content-type", "application/json")
+
+	var client http.Client
+	resp, err := client.Do(req)
+
+	if err != nil {
+		return nil, err
+	}
+
+	pd_resp := p.readResponse(resp)
+	return pd_resp, nil
+}
+
+func (p *Pipedrive) DeleteOrganization(id int) (*PipedriveResponse, error) {
+	ep := fmt.Sprintf("organizations/%d", id)
+	url := p.makeApiEndpoint(ep)
+
+	req, err := http.NewRequest("DELETE", url.String(), strings.NewReader(""))
 
 	var client http.Client
 	resp, err := client.Do(req)

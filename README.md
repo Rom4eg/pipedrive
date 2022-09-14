@@ -58,13 +58,13 @@
    - [ ] List mail messages
    - [ ] List permitted users
    - [ ] List products
-   - [ ] Add
+   - [X] Add
    - [ ] Add a follower
    - [ ] Add person picture
-   - [ ] Update
+   - [X] Update
    - [ ] Merge
    - [ ] Delete multiple
-   - [ ] Delete
+   - [X] Delete
    - [ ] Delete a follower
    - [ ] Delete person picture
  - [ ] Person Fields

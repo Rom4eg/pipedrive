@@ -49,7 +49,7 @@
  - [ ] Persons
    - [X] Get all
    - [ ] Search
-   - [ ] Get details
+   - [X] Get details
    - [ ] List activities
    - [ ] List deals
    - [ ] List files

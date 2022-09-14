@@ -1,6 +1,7 @@
 package pipedrive
 
 import (
+	"fmt"
 	"net/http"
 	"strconv"
 )
@@ -40,6 +41,20 @@ func (p *Pipedrive) ListPersons(filter PersonFilter) (*PipedriveResponse, error)
 	if filter.Sort != "" {
 		url.Query.Add("sort", filter.Sort)
 	}
+
+	resp, err := http.Get(url.String())
+
+	if err != nil {
+		return nil, err
+	}
+
+	pd_resp := p.readResponse(resp)
+	return pd_resp, nil
+}
+
+func (p *Pipedrive) GetPerson(id int) (*PipedriveResponse, error) {
+	ep := fmt.Sprintf("persons/%d", id)
+	url := p.makeApiEndpoint(ep)
 
 	resp, err := http.Get(url.String())
 

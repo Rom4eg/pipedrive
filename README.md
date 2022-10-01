@@ -40,7 +40,7 @@
  - [ ] Organization Fields
    - [X] Get all
    - [ ] Get one
-   - [ ] Add
+   - [X] Add
    - [ ] Update
    - [ ] Delete in bulk
    - [ ] Delete

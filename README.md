@@ -20,7 +20,7 @@
  - [ ] Note Fields
  - [ ] Organizations
    - [X] Get all
-   - [ ] Search
+   - [X] Search
    - [X] Get details
    - [ ] List activities
    - [ ] List deals

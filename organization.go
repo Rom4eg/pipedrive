@@ -3,6 +3,7 @@ package pipedrive
 import (
 	"bytes"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"net/http"
 	"strconv"
@@ -120,6 +121,65 @@ func (p *Pipedrive) DeleteOrganization(id int) (*PipedriveResponse, error) {
 
 	var client http.Client
 	resp, err := client.Do(req)
+
+	if err != nil {
+		return nil, err
+	}
+
+	pd_resp := p.readResponse(resp)
+	return pd_resp, nil
+}
+
+type SearchField int
+
+const (
+	SearchInAddress SearchField = iota
+	SearchInCustom
+	SearchInNotes
+	SearchInName
+)
+
+func (sf SearchField) String() string {
+	return [...]string{"address", "custom_fields", "notes", "name"}[sf]
+}
+
+type SearchOrganizationOption struct {
+	Term   string
+	Fields []SearchField
+	Exact  bool
+	Start  int
+	Limit  int
+}
+
+func (p *Pipedrive) SearchOrganization(opt SearchOrganizationOption) (*PipedriveResponse, error) {
+	url := p.makeApiEndpoint("organizations/search")
+	if opt.Term != "" {
+		url.Query.Add("term", opt.Term)
+	} else {
+		return nil, errors.New("Option 'Term' cannot be empty")
+	}
+
+	if len(opt.Fields) >= 1 {
+		fields := make([]string, len(opt.Fields))
+		for idx, fld := range opt.Fields {
+			fields[idx] = fld.String()
+		}
+		url.Query.Add("fields", strings.Join(fields[:], ","))
+	}
+
+	if opt.Exact == true {
+		url.Query.Add("exact_match", "true")
+	}
+
+	if opt.Start >= 0 {
+		url.Query.Add("start", strconv.Itoa(opt.Start))
+	}
+
+	if opt.Limit > 0 {
+		url.Query.Add("limit", strconv.Itoa(opt.Start))
+	}
+
+	resp, err := http.Get(url.String())
 
 	if err != nil {
 		return nil, err

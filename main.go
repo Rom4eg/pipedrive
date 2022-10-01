@@ -17,16 +17,15 @@ type Pipedrive struct {
 }
 
 func (p *Pipedrive) GetBasePath() string {
+	if p.BasePath != "" {
+		return p.BasePath
+	}
+
 	ver := p.ApiVersion
 	if ver < 1 {
 		ver = 1
 	}
-
-	if p.BasePath == "" {
-		return fmt.Sprintf("https://api.pipedrive.com/v%d", ver)
-	}
-
-	return p.BasePath
+	return fmt.Sprintf("https://api.pipedrive.com/v%d", ver)
 }
 
 func (p *Pipedrive) makeApiEndpoint(endpoint string) *PdEndpoint {
@@ -36,7 +35,6 @@ func (p *Pipedrive) makeApiEndpoint(endpoint string) *PdEndpoint {
 	}
 
 	raw_url := fmt.Sprintf("%s%s", base, endpoint)
-
 	url, _ := NetUrl.Parse(raw_url)
 	query := url.Query()
 	query.Add("api_token", p.ApiKey)

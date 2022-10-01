@@ -31,7 +31,7 @@ func (p *Pipedrive) GetBasePath() string {
 
 func (p *Pipedrive) makeApiEndpoint(endpoint string) *PdEndpoint {
 	base := p.GetBasePath()
-	if !strings.HasSuffix(p.GetBasePath(), "/") {
+	if !strings.HasSuffix(base, "/") {
 		base += "/"
 	}
 
@@ -61,11 +61,12 @@ func (p *Pipedrive) readResponse(resp *http.Response) *PipedriveResponse {
 	}
 
 	hits := resp.Header.Get("x-daily-requests-left")
-	val, err := strconv.ParseUint(hits, 10, 32)
 
-	pd_resp.RemainHits = int32(val)
-	if err != nil {
+	if hits == "" {
 		pd_resp.RemainHits = 0
+	} else {
+		val, _ := strconv.ParseUint(hits, 10, 32)
+		pd_resp.RemainHits = int32(val)
 	}
 
 	return &pd_resp

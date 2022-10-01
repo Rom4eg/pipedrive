@@ -23,7 +23,7 @@
    - [X] Search
    - [X] Get details
    - [X] List activities
-   - [ ] List deals
+   - [X] List deals
    - [ ] List files
    - [ ] List updates
    - [ ] List followers

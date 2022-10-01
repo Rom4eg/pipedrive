@@ -256,7 +256,7 @@ func (p *Pipedrive) SearchOrganization(opt SearchOrganizationOptions) (*Pipedriv
 	return pd_resp, nil
 }
 
-// Done enumeration
+// Done status enumeration
 type DoneStatus int
 
 const (
@@ -312,6 +312,73 @@ func (p *Pipedrive) ListActivities(id int, opt SearchOrgActivitiesOptions) (*Pip
 			ids[idx] = strconv.Itoa(id)
 		}
 		url.Query.Add("exclude", strings.Join(ids, ","))
+	}
+
+	resp, err := http.Get(url.String())
+
+	if err != nil {
+		return nil, err
+	}
+
+	pd_resp := p.readResponse(resp)
+	return pd_resp, nil
+}
+
+type DealStatus int
+
+const (
+	DealStatusOpen DealStatus = iota
+	DealStatusWon
+	DealStatusLost
+	DealStatusDeleted
+	DealStatusAll
+)
+
+func (s DealStatus) String() string {
+	return [...]string{"open", "won", "lost", "deleted", "all_not_deleted"}[s]
+}
+
+type DealPrimaryStatus int
+
+const (
+	DealPrimaryStatusFalse DealPrimaryStatus = iota
+	DealPrimaryStatusTrue
+)
+
+func (p DealPrimaryStatus) String() string {
+	return [...]string{"0", "1"}[p]
+}
+
+type SearchOrgDealsOptions struct {
+	Start   int
+	Limit   int
+	Status  *DealStatus
+	Sort    string
+	Primary *DealPrimaryStatus
+}
+
+func (p *Pipedrive) ListDeals(id int, opt SearchOrgDealsOptions) (*PipedriveResponse, error) {
+	ep := fmt.Sprintf("organizations/%d/deals", id)
+	url := p.makeApiEndpoint(ep)
+
+	if opt.Start >= 0 {
+		url.Query.Add("start", strconv.Itoa(opt.Start))
+	}
+
+	if opt.Limit > 0 {
+		url.Query.Add("limit", strconv.Itoa(opt.Limit))
+	}
+
+	if opt.Status != nil {
+		url.Query.Add("status", opt.Status.String())
+	}
+
+	if opt.Sort != "" {
+		url.Query.Add("sort", opt.Sort)
+	}
+
+	if opt.Primary != nil {
+		url.Query.Add("only_primary_association", opt.Primary.String())
 	}
 
 	resp, err := http.Get(url.String())

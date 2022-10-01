@@ -89,3 +89,6 @@
  - [ ] User Connections
  - [ ] User Settings
  - [ ] Webhooks
+   - [X] Get all
+   - [ ] Create
+   - [ ] Delete

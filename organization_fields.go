@@ -14,28 +14,8 @@ type OrgFieldsFilter struct {
 	Limit int
 }
 
-func (p *Pipedrive) GetOrganizationFields(filter OrgFieldsFilter) (*PipedriveResponse, error) {
-	url := p.makeApiEndpoint("organizationFields")
-
-	if filter.Start >= 0 {
-		url.Query.Add("start", strconv.Itoa(filter.Start))
-	}
-
-	if filter.Limit > 0 {
-		url.Query.Add("limit", strconv.Itoa(filter.Limit))
-	}
-
-	resp, err := http.Get(url.String())
-
-	if err != nil {
-		return nil, err
-	}
-
-	pd_resp := p.readResponse(resp)
-	return pd_resp, nil
-}
-
 type OrgFieldOption struct {
+	Id    int    `json:"id,omitempty"`
 	Label string `json:"label,omitempty"`
 }
 
@@ -75,6 +55,27 @@ type OrgField struct {
 	Type    OrgFieldType      `json:"field_type,omitempty"`
 }
 
+func (p *Pipedrive) GetOrganizationFields(filter OrgFieldsFilter) (*PipedriveResponse, error) {
+	url := p.makeApiEndpoint("organizationFields")
+
+	if filter.Start >= 0 {
+		url.Query.Add("start", strconv.Itoa(filter.Start))
+	}
+
+	if filter.Limit > 0 {
+		url.Query.Add("limit", strconv.Itoa(filter.Limit))
+	}
+
+	resp, err := http.Get(url.String())
+
+	if err != nil {
+		return nil, err
+	}
+
+	pd_resp := p.readResponse(resp)
+	return pd_resp, nil
+}
+
 func (p *Pipedrive) AddOrgField(fld OrgField) (*PipedriveResponse, error) {
 	url := p.makeApiEndpoint("organizationFields")
 
@@ -87,7 +88,7 @@ func (p *Pipedrive) AddOrgField(fld OrgField) (*PipedriveResponse, error) {
 	}
 
 	if (fld.Type == OrgFieldTypeSet || fld.Type == OrgFieldTypeEnum) && (fld.Options == nil || len(*fld.Options) < 1) {
-		msg := fmt.Sprintf("When field type is equal to %v the Options field is required", fld.Type)
+		msg := fmt.Sprintf("When field type is %v the Options field is required", fld.Type)
 		return nil, errors.New(msg)
 	}
 
@@ -99,6 +100,35 @@ func (p *Pipedrive) AddOrgField(fld OrgField) (*PipedriveResponse, error) {
 
 	buf := bytes.NewBuffer(body)
 	resp, err := http.Post(url.String(), "application/json", buf)
+
+	if err != nil {
+		return nil, err
+	}
+
+	pd_resp := p.readResponse(resp)
+	return pd_resp, nil
+}
+
+func (p *Pipedrive) UpdateOrgField(id int, fld OrgField) (*PipedriveResponse, error) {
+	ep := fmt.Sprintf("organizationFields/%d", id)
+	url := p.makeApiEndpoint(ep)
+
+	if fld.Type != "" {
+		return nil, errors.New("Field type cannot be changed")
+	}
+
+	json_data, err := json.Marshal(fld)
+
+	if err != nil {
+		return nil, err
+	}
+
+	buf := bytes.NewBuffer(json_data)
+	req, err := http.NewRequest("PUT", url.String(), buf)
+	req.Header.Add("content-type", "application/json")
+
+	var client http.Client
+	resp, err := client.Do(req)
 
 	if err != nil {
 		return nil, err

@@ -41,7 +41,7 @@
    - [X] Get all
    - [ ] Get one
    - [X] Add
-   - [ ] Update
+   - [X] Update
    - [ ] Delete in bulk
    - [ ] Delete
  - [ ] Organization Relationships

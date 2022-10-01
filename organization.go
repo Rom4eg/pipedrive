@@ -10,15 +10,34 @@ import (
 	"strings"
 )
 
+// OrgFilter holds filtering conditions
 type OrgFilter struct {
-	UserId    int
-	FilterId  int
+	// If supplied, only organizations owned by the given user will be returned.
+	// However, FilterId takes precedence over UserId when both are supplied.
+	UserId int
+
+	// The ID of the filter to use
+	FilterId int
+
+	// If supplied, only organizations whose name starts with the specified
+	// letter will be returned (case insensitive)
 	FirstChar string
-	Start     int
-	Limit     int
-	Sort      string
+
+	// Pagination start
+	// Default - 0
+	Start int
+
+	// Items shown per page
+	Limit int
+
+	// The field names and sorting mode separated by a comma (field_name_1 ASC,
+	// field_name_2 DESC). Only first-level field keys are supported (no nested keys).
+	Sort string
 }
 
+// Get all organizations.
+//
+// https://developers.pipedrive.com/docs/api/v1/Organizations#getOrganizations
 func (p *Pipedrive) ListOrganizations(filter OrgFilter) (*PipedriveResponse, error) {
 	url := p.makeApiEndpoint("organizations")
 
@@ -56,6 +75,14 @@ func (p *Pipedrive) ListOrganizations(filter OrgFilter) (*PipedriveResponse, err
 	return pd_resp, nil
 }
 
+// Get details of an organization
+//
+// Returns details of an organization. Note that this also returns some
+// additional fields which are not present when asking for all organizations.
+// Also note that custom fields appear as long hashes in the resulting data.
+// These hashes can be mapped against the key value of organizationFields.
+//
+// https://developers.pipedrive.com/docs/api/v1/Organizations#getOrganization
 func (p *Pipedrive) GetOrganization(id int) (*PipedriveResponse, error) {
 	ep := fmt.Sprintf("organizations/%d", id)
 	url := p.makeApiEndpoint(ep)
@@ -70,6 +97,17 @@ func (p *Pipedrive) GetOrganization(id int) (*PipedriveResponse, error) {
 	return pd_resp, nil
 }
 
+// Add an organization
+//
+// Adds a new organization. Note that you can supply additional custom fields along with
+// the request that are not described here. These custom fields are different for each
+// Pipedrive account and can be recognized by long hashes as keys.
+// To determine which custom fields exists, fetch the organizationFields
+// and look for key values. For more information, see the tutorial for adding an organization.
+//
+// Tutorial: https://pipedrive.readme.io/docs/adding-an-organization
+//
+// https://developers.pipedrive.com/docs/api/v1/Organizations#addOrganization
 func (p *Pipedrive) AddOrganization(fields map[string]interface{}) (*PipedriveResponse, error) {
 	url := p.makeApiEndpoint("organizations")
 	json_data, err := json.Marshal(fields)
@@ -89,6 +127,9 @@ func (p *Pipedrive) AddOrganization(fields map[string]interface{}) (*PipedriveRe
 	return pd_resp, nil
 }
 
+// Updates the properties of an organization.
+//
+// https://developers.pipedrive.com/docs/api/v1/Organizations#updateOrganization
 func (p *Pipedrive) UpdateOrganization(id int, fields map[string]interface{}) (*PipedriveResponse, error) {
 	ep := fmt.Sprintf("organizations/%d", id)
 	url := p.makeApiEndpoint(ep)
@@ -113,6 +154,9 @@ func (p *Pipedrive) UpdateOrganization(id int, fields map[string]interface{}) (*
 	return pd_resp, nil
 }
 
+// Marks an organization as deleted.
+//
+// https://developers.pipedrive.com/docs/api/v1/Organizations#deleteOrganization
 func (p *Pipedrive) DeleteOrganization(id int) (*PipedriveResponse, error) {
 	ep := fmt.Sprintf("organizations/%d", id)
 	url := p.makeApiEndpoint(ep)
@@ -130,6 +174,7 @@ func (p *Pipedrive) DeleteOrganization(id int) (*PipedriveResponse, error) {
 	return pd_resp, nil
 }
 
+// Search fields enum
 type SearchField int
 
 const (
@@ -139,19 +184,41 @@ const (
 	SearchInName
 )
 
+// Returns enum value
 func (sf SearchField) String() string {
 	return [...]string{"address", "custom_fields", "notes", "name"}[sf]
 }
 
-type SearchOrganizationOption struct {
-	Term   string
+// Search parameters
+type SearchOrganizationOptions struct {
+
+	// The search term to look for. Minimum 2 characters (or 1 if using Exact).
+	Term string
+
+	// The fields to perform the search from. Defaults to all of them.
 	Fields []SearchField
-	Exact  bool
-	Start  int
-	Limit  int
+
+	// When enabled, only full exact matches against the given term are returned.
+	// It is not case sensitive.
+	Exact bool
+
+	// Pagination start. Note that the pagination is based on main results and
+	// does not include related items when using search_for_related_items parameter.
+	//
+	// Default - 0
+	Start int
+
+	// Items shown per page
+	Limit int
 }
 
-func (p *Pipedrive) SearchOrganization(opt SearchOrganizationOption) (*PipedriveResponse, error) {
+// Search organizations
+//
+// Searches all organizations by name, address, notes and/or custom fields.
+// This endpoint is a wrapper of /v1/itemSearch with a narrower OAuth scope.
+//
+// https://developers.pipedrive.com/docs/api/v1/Organizations#searchOrganization
+func (p *Pipedrive) SearchOrganization(opt SearchOrganizationOptions) (*PipedriveResponse, error) {
 	url := p.makeApiEndpoint("organizations/search")
 	if opt.Term != "" {
 		url.Query.Add("term", opt.Term)
@@ -177,6 +244,74 @@ func (p *Pipedrive) SearchOrganization(opt SearchOrganizationOption) (*Pipedrive
 
 	if opt.Limit > 0 {
 		url.Query.Add("limit", strconv.Itoa(opt.Start))
+	}
+
+	resp, err := http.Get(url.String())
+
+	if err != nil {
+		return nil, err
+	}
+
+	pd_resp := p.readResponse(resp)
+	return pd_resp, nil
+}
+
+// Done enumeration
+type DoneStatus int
+
+const (
+	DoneStatusFalse DoneStatus = iota
+	DoneStatusTrue
+)
+
+// Filter activities filter
+type SearchOrgActivitiesOptions struct {
+	// Pagination start
+	//
+	// Default - 0
+	Start int
+
+	// Items shown per page
+	Limit int
+
+	// Whether the activity is done or not. DoneStatusFalse = Not done, DoneStatusTrue = Done.
+	// If omitted or nil returns both Done and Not done activities.
+	Done *DoneStatus
+
+	// A list of activity IDs to exclude from result
+	Exclude []int
+}
+
+// Returns string value
+func (d DoneStatus) String() string {
+	return [...]string{"0", "1"}[d]
+}
+
+// List activities associated with an organization
+//
+// https://developers.pipedrive.com/docs/api/v1/Organizations#getOrganizationActivities
+func (p *Pipedrive) ListActivities(id int, opt SearchOrgActivitiesOptions) (*PipedriveResponse, error) {
+	ep := fmt.Sprintf("organizations/%d/activities", id)
+	url := p.makeApiEndpoint(ep)
+
+	if opt.Start >= 0 {
+		url.Query.Add("start", strconv.Itoa(opt.Start))
+	}
+
+	if opt.Limit > 0 {
+		url.Query.Add("limit", strconv.Itoa(opt.Limit))
+	}
+
+	if opt.Done != nil {
+		url.Query.Add("done", opt.Done.String())
+	}
+
+	if len(opt.Exclude) > 0 {
+		ids := make([]string, len(opt.Exclude))
+		for idx, id := range opt.Exclude {
+			ids[idx] = strconv.Itoa(id)
+		}
+		url.Query.Add("exclude", strings.Join(ids, ","))
 	}
 
 	resp, err := http.Get(url.String())

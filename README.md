@@ -22,7 +22,7 @@
    - [X] Get all
    - [X] Search
    - [X] Get details
-   - [ ] List activities
+   - [X] List activities
    - [ ] List deals
    - [ ] List files
    - [ ] List updates

@@ -47,6 +47,10 @@
    - [ ] Update
    - [ ] Delete
  - [ ] Lead Labels
+   - [X] Get all
+   - [ ] Add
+   - [ ] Delete
+   - [ ] Update
  - [ ] Lead Sources
  - [ ] Mailbox
  - [ ] Notes

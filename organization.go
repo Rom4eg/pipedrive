@@ -357,7 +357,7 @@ type SearchOrgDealsOptions struct {
 	Primary *DealPrimaryStatus
 }
 
-func (p *Pipedrive) ListDeals(id int, opt SearchOrgDealsOptions) (*PipedriveResponse, error) {
+func (p *Pipedrive) ListOrgDeals(id int, opt SearchOrgDealsOptions) (*PipedriveResponse, error) {
 	ep := fmt.Sprintf("organizations/%d/deals", id)
 	url := p.makeApiEndpoint(ep)
 

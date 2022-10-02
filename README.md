@@ -13,6 +13,12 @@
  - [ ] Goals
  - [ ] Item Search
  - [ ] Leads
+   - [X] Get all
+   - [ ] Get one
+   - [ ] Search
+   - [ ] Add
+   - [ ] Update
+   - [ ] Delete
  - [ ] Lead Labels
  - [ ] Lead Sources
  - [ ] Mailbox

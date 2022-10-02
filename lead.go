@@ -1,6 +1,9 @@
 package pipedrive
 
 import (
+	"bytes"
+	"encoding/json"
+	"errors"
 	"net/http"
 	"strconv"
 )
@@ -64,6 +67,37 @@ func (p *Pipedrive) ListLeads(f LeadsFilter) (*PipedriveResponse, error) {
 	}
 
 	resp, err := http.Get(url.String())
+
+	if err != nil {
+		return nil, err
+	}
+
+	pd_resp := p.readResponse(resp)
+	return pd_resp, nil
+}
+
+func (p *Pipedrive) AddLead(body map[string]interface{}) (*PipedriveResponse, error) {
+	url := p.makeApiEndpoint("leads")
+	_, t_ok := body["title"]
+	if !t_ok {
+		return nil, errors.New("Field 'title' is required")
+	}
+
+	_, p_ok := body["person_id"]
+	_, o_ok := body["organization_id"]
+
+	if !p_ok && !o_ok {
+		return nil, errors.New("A lead always has to be linked to a person or an organization or both")
+	}
+
+	json_data, err := json.Marshal(body)
+
+	if err != nil {
+		return nil, err
+	}
+
+	buf := bytes.NewBuffer(json_data)
+	resp, err := http.Post(url.String(), "application/json", buf)
 
 	if err != nil {
 		return nil, err

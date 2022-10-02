@@ -43,7 +43,7 @@
    - [X] Get all
    - [ ] Get one
    - [ ] Search
-   - [ ] Add
+   - [X] Add
    - [ ] Update
    - [ ] Delete
  - [ ] Lead Labels

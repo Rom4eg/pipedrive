@@ -7,6 +7,33 @@
  - [ ] Channels
  - [ ] Currencies
  - [ ] Deals
+   - [X] Get all
+   - [ ] Search
+   - [ ] Get summary
+   - [ ] Get timeline
+   - [ ] Get details
+   - [ ] List activities
+   - [ ] List files
+   - [ ] List updates
+   - [ ] List followers
+   - [ ] List mail messages
+   - [ ] List participants
+   - [ ] List permitted users
+   - [ ] List all persons
+   - [ ] List products
+   - [ ] Add
+   - [ ] Duplicate
+   - [ ] Add a follower
+   - [ ] Add a participant
+   - [ ] Add a product
+   - [ ] Update
+   - [ ] Merge
+   - [ ] Update product attachment details
+   - [ ] Delete multiple deals
+   - [ ] Delete
+   - [ ] Delete a follower
+   - [ ] Delete a participant
+   - [ ] Delete product
  - [ ] Deal Fields
  - [ ] Files
  - [ ] Filters

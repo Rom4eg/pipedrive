@@ -44,7 +44,7 @@
    - [ ] Get one
    - [ ] Search
    - [X] Add
-   - [ ] Update
+   - [X] Update
    - [ ] Delete
  - [ ] Lead Labels
    - [X] Get all

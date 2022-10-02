@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"errors"
+	"fmt"
 	"net/http"
 	"strconv"
 )
@@ -98,6 +99,31 @@ func (p *Pipedrive) AddLead(body map[string]interface{}) (*PipedriveResponse, er
 
 	buf := bytes.NewBuffer(json_data)
 	resp, err := http.Post(url.String(), "application/json", buf)
+
+	if err != nil {
+		return nil, err
+	}
+
+	pd_resp := p.readResponse(resp)
+	return pd_resp, nil
+}
+
+func (p *Pipedrive) UpdateLead(id string, body map[string]interface{}) (*PipedriveResponse, error) {
+	ep := fmt.Sprintf("leads/%s", id)
+	url := p.makeApiEndpoint(ep)
+
+	json_data, err := json.Marshal(body)
+
+	if err != nil {
+		return nil, err
+	}
+
+	buf := bytes.NewBuffer(json_data)
+	req, err := http.NewRequest("PATCH", url.String(), buf)
+	req.Header.Add("content-type", "application/json")
+
+	var client http.Client
+	resp, err := client.Do(req)
 
 	if err != nil {
 		return nil, err

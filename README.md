@@ -101,6 +101,12 @@
    - [ ] Delete a follower
    - [ ] Delete person picture
  - [ ] Person Fields
+   - [X] Get all
+   - [ ] Get one
+   - [ ] Add
+   - [ ] Update
+   - [ ] Delete multiple
+   - [ ] Delete
  - [ ] Pipelines
  - [ ] Products
  - [ ] Product Fields
